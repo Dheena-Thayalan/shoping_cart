@@ -1,0 +1,85 @@
+<nz-row nzGutter="5">
+    <nz-col [nzSm]="3" [nzXs]="24">
+
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="input search text" />
+        </nz-input-group>
+
+        <ng-template #suffixIconSearch><i nz-icon nzType="search"></i></ng-template>
+        <br />
+
+        <nz-divider nzText="Category" nzOrientation="left"></nz-divider>
+        <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)=filter($event)>
+            <label nz-radio nzValue="Premium">Premium</label> <label nz-radio nzValue="Reset" *ngIf="radioValue"
+                style="color: red;">Clear</label>
+            <label nz-radio nzValue="Tamilnadu">Tamilnadu</label>
+        </nz-radio-group>
+
+    </nz-col>
+
+    <nz-col [nzSm]="1" [nzXs]="24">
+        <nz-divider style="height:100%;" nzType="vertical"></nz-divider>
+    </nz-col>
+
+    <nz-col [nzSm]="20" [nzXs]="24">
+
+        <nz-row nzGutter="5">
+
+            <nz-col [nzSm]="6" [nzXs]="24" *ngFor="let data of jsonData;">
+
+                <nz-card nzHoverable style="width:240px" [nzBordered]="false" [nzLoading]="load"
+                    [nzCover]="coverTemplate">
+                    <nz-card-meta [nzTitle]="title" [nzDescription]="discripsion"></nz-card-meta>
+
+                    <ng-template #title>
+                        <nz-row nzGutter="5">
+                            <nz-col [nzSm]="14" [nzXs]="12">
+                                <h2>{{data?.p_name}}</h2>
+                            </nz-col>
+
+                            <nz-col [nzSm]="10" [nzXs]="12" style="padding:5px;">
+                                <h3>{{data?.p_cost|currency:'INR':true:'2.0'}}kg</h3>
+                            </nz-col>
+
+                        </nz-row>
+                    </ng-template>
+
+                    <ng-template #discripsion>
+                        {{data?.p_details ?? '--'}}
+                        <br /><br />
+
+                        <nz-row nzGutter="5">
+
+                            <nz-col [nzSm]="11" [nzXs]="24" style="text-align: center;">
+                                <nz-form-item>
+                                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="quantity">
+                                        <nz-input-number [nzMin]="1" (input)="quantity($event,data.p_id)"   [nzStep]="1"
+                                            nzPlaceHolder="1KG" ></nz-input-number>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </nz-col>
+
+                            <nz-col [nzSm]="1" [nzXs]="24"></nz-col>
+                            <nz-col [nzSm]="12" [nzXs]="24" style="text-align: center;">
+                                <button nz-button nzType="primary" nzShape="round" [nzLoading]="isLoading" type="submit" (click)="onSubmit(data.p_name,data.p_id)" >
+                                    <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
+                                    ADD
+                                </button>
+                            </nz-col>
+
+                        </nz-row>
+  
+                    </ng-template>
+
+                </nz-card>
+
+                <ng-template #coverTemplate>
+                    <div class="sidebar-logo">
+                        <img alt="example" [src]="data?.p_img" />
+                    </div>
+                </ng-template>
+
+            </nz-col>
+        </nz-row>
+    </nz-col>
+</nz-row>
